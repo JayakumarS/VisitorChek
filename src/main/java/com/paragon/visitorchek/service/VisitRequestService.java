@@ -28,7 +28,10 @@ public class VisitRequestService {
 
 	@Transactional
 	public VisitRequest save(VisitRequest visitRequest) {
+		System.out.println("Before"+visitRequest.toString());
 		visitRequest = visitRequestDao.save(visitRequest);
+		System.out.println("After"+visitRequest.toString());
+		
 		return visitRequest;
 	}
 
