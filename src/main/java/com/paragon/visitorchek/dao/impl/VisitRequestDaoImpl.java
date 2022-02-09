@@ -19,7 +19,7 @@ public class VisitRequestDaoImpl implements VisitRequestDao {
 
 	@Override
 	public List<VisitRequest> findAll() {
-		return jdbcTemplate.query("SELECT id, talentid, name, to_char(visit_date,'DD-MM-YYYY HH:SS') as visit_date, purpose, visit_work_place, visit_home from visit_request", BeanPropertyRowMapper.newInstance(VisitRequest.class));
+		return jdbcTemplate.query("SELECT id, talentid, name, to_char(visit_date,'DD-MM-YYYY HH:SS') as visitDate, purpose, visit_work_place visitWorkplace, visit_home visitHome,mobile_number mobileNumber,image as imagePath from visit_request", BeanPropertyRowMapper.newInstance(VisitRequest.class));
 	}
 
 	@Override
@@ -38,9 +38,10 @@ public class VisitRequestDaoImpl implements VisitRequestDao {
 	public VisitRequest save(VisitRequest visitRequest) {
 		int result = 0;
 		result = jdbcTemplate.update(
-				"INSERT INTO visit_request (talentid, name, visit_date,purpose,visit_work_place,visit_home) VALUES(?,?,TO_TIMESTAMP(?,'YYYY-MM-DD HH24:MI'),?,?,?)",
+				"INSERT INTO visit_request (talentid, name, visit_date,purpose,visit_work_place,visit_home,from_date,to_date,no_of_people,parking,baggage,remarks) VALUES(?,?,TO_TIMESTAMP(?,'YYYY-MM-DD HH24:MI'),?,?,?,TO_TIMESTAMP(?,'YYYY-MM-DD HH24:MI'),TO_TIMESTAMP(?,'YYYY-MM-DD HH24:MI'),?,?,?,?)",
 				new Object[] { visitRequest.getTalentId(), visitRequest.getName(), visitRequest.getVisitDate(),
-						visitRequest.getPurpose(), visitRequest.isVisitWorkplace(), visitRequest.isVisitHome() });
+						visitRequest.getPurpose(), visitRequest.isVisitWorkplace(), visitRequest.isVisitHome(),visitRequest.getFromdate(),visitRequest.getToDate(),
+						visitRequest.getNoofpeople(),visitRequest.getParking(),visitRequest.getBaggage(),visitRequest.getRemarks() });
 		if (result != 0) {
 			return visitRequest;
 		} else {
