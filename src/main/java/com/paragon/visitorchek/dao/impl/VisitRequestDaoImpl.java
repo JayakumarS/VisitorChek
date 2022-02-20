@@ -28,13 +28,13 @@ public class VisitRequestDaoImpl implements VisitRequestDao {
 	public List<VisitRequest> findvistorsbyHost(String hostid) {
 		return jdbcTemplate.query("SELECT visit_request.id, talentid, host_id hostId,visitor_id visitorId, TO_CHAR(visit_starttime,'DD-MM-YYYY HH:SS') as visitStartTime, TO_CHAR(visit_endtime,'DD-MM-YYYY HH:SS') as visitEndtime,purpose, visit_place visitPlace,approve_by approveBy,"
 				+ "				 cancelled_by cancelledBy ,image "
-				+ "				  from visit_request,users where visit_request.host_id::int=users.id and host_id= ?", BeanPropertyRowMapper.newInstance(VisitRequest.class),hostid);
+				+ "				  from visit_request,users where visit_request.visitor_id::int=users.id and host_id= ?", BeanPropertyRowMapper.newInstance(VisitRequest.class),hostid);
 		}
 	@Override
 	public List<VisitRequest> findvistorsbyVisitor(String visitorid) {
 		return jdbcTemplate.query(" SELECT visit_request.id, talentid, host_id hostId,visitor_id visitorId, TO_CHAR(visit_starttime,'DD-MM-YYYY HH:SS') as visitStartTime,TO_CHAR(visit_endtime,'DD-MM-YYYY HH:SS') as visitEndtime, purpose, visit_place visitPlace,approve_by approveBy,"
 				+ "	  cancelled_by cancelledBy ,image\r\n"
-				+ "				 from visit_request,users where visit_request.visitor_id::int=users.id and visitor_id= ?", BeanPropertyRowMapper.newInstance(VisitRequest.class),visitorid);
+				+ "				 from visit_request,users where visit_request.host_id::int=users.id and visitor_id= ?", BeanPropertyRowMapper.newInstance(VisitRequest.class),visitorid);
 		}
 	
 	

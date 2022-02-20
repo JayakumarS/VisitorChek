@@ -61,7 +61,7 @@ WITH (
 ALTER TABLE users
   OWNER TO postgres;
   
-  -- Table: visit_request
+-- Table: visit_request
 
 -- DROP TABLE visit_request;
 
@@ -74,7 +74,7 @@ CREATE TABLE visit_request
   visit_starttime timestamp without time zone,
   visit_endtime timestamp without time zone,
   visit_place character varying(20),
-  purpose character varying(20),
+  purpose character varying(500),
   parking_required character varying(5),
   vehical_no character varying(100),
   no_of_people numeric,
