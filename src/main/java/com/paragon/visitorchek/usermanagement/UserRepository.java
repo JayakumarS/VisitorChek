@@ -12,4 +12,6 @@ public interface UserRepository extends CrudRepository<User, Serializable>{
 	Boolean existsByUsername(String username);
 
 	Boolean existsByEmail(String email);	
+
+	Boolean existsByMobilenumber(String mobilenumber);
 }

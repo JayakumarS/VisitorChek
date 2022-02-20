@@ -1,12 +1,21 @@
 package com.paragon.visitorchek.security;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +29,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.paragon.visitorchek.model.VisitRequest;
 import com.paragon.visitorchek.usermanagement.ERole;
 import com.paragon.visitorchek.usermanagement.Role;
 import com.paragon.visitorchek.usermanagement.RoleRepository;
@@ -30,6 +45,7 @@ import com.paragon.visitorchek.usermanagement.SignupRequest;
 import com.paragon.visitorchek.usermanagement.User;
 import com.paragon.visitorchek.usermanagement.UserDetailsImpl;
 import com.paragon.visitorchek.usermanagement.UserRepository;
+import com.paragon.visitorchek.util.ImageUtility;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -70,7 +86,7 @@ public class AuthController {
 				.collect(Collectors.toList());
 
 		return ResponseEntity.ok(
-				new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roles));
+				new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roles,ImageUtility.decompressImage(userDetails.getImage())));
 	}
 
 	@ApiOperation(value = "Get user info by token")
@@ -86,23 +102,39 @@ public class AuthController {
 		return userDetails;
 	}
 
-	@ApiOperation(value = "Sign Up")
-	@PostMapping("/signup")
-	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-		if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+	@ApiOperation(value = "Sign Up") 
+	@RequestMapping(value = "/signup") 
+	public ResponseEntity<?> registerUser(@RequestParam("image") MultipartFile file,
+			@RequestParam("name")  String  name,@RequestParam("username")  String  username,@RequestParam("mobilenumber")  String  mobilenumber,
+			@RequestParam("email")  String  email,@RequestParam("password")  String  password,@RequestParam("usertype")  String  usertype)   throws IOException  {
+		 if (userRepository.existsByUsername(username)) {
 			return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
 		}
 
-		if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+		if (userRepository.existsByEmail(email)) {
 			return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
 		}
-
+		if (userRepository.existsByMobilenumber(mobilenumber)) {
+			return ResponseEntity.badRequest().body(new MessageResponse("Error: Mobile Number is already in use!"));
+		}
 		// Create new user's account
-		User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(),
-				encoder.encode(signUpRequest.getPassword()));
-
-		Set<String> strRoles = signUpRequest.getRole();
+	
+		Set<String> strRoles =new HashSet<>();
+		if(usertype.equals("Host"))
+			strRoles.add(ERole.ROLE_ADMIN.toString());
+		else strRoles.add(ERole.ROLE_USER.toString());
+  
 		Set<Role> roles = new HashSet<>();
+
+		User user = new User();
+		
+		
+		user.setUsername(username);
+		user.setEmail(email);
+		user.setPassword(encoder.encode(password));
+		user.setMobilenumber(mobilenumber);
+		user.setUsertype(usertype); 
+		user.setImage(ImageUtility.compressImage(file.getBytes())); 
 
 		if (strRoles == null) {
 			Role userRole = roleRepository.findByName(ERole.ROLE_USER)
@@ -127,7 +159,9 @@ public class AuthController {
 
 		user.setRoles(roles);
 		userRepository.save(user);
+		 
 
 		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
 	}
+	
 }

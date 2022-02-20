@@ -14,13 +14,47 @@ public class SignupRequest {
     @Email
     private String email;
     
+    private String mobilenumber;
+    
+    private String usertype;
+    
+    
+
+    
     private Set<String> role;
     
     @NotBlank
     @Size(min = 6, max = 40)
     private String password;
-  
-    public String getUsername() {
+    private String image;
+
+
+    
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public String getUsertype() {
+		return usertype;
+	}
+
+	public void setUsertype(String usertype) {
+		this.usertype = usertype;
+	}
+
+	public String getMobilenumber() {
+		return mobilenumber;
+	}
+
+	public void setMobilenumber(String mobilenumber) {
+		this.mobilenumber = mobilenumber;
+	}
+
+	public String getUsername() {
         return username;
     }
  

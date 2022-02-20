@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.paragon.visitorchek.model.VisitRequest;
 import com.paragon.visitorchek.service.VisitRequestService;
+import com.paragon.visitorchek.usermanagement.User;
+import com.paragon.visitorchek.usermanagement.UserRepository;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,6 +25,9 @@ public class VisitRequestController {
 
 	@Autowired
 	VisitRequestService visitRequestService;
+	
+	@Autowired
+	UserRepository userRepository;
 
 	@ApiOperation(value = "Retrieves all the Visit Request")
 	@GetMapping("/visitRequest")
@@ -47,11 +52,39 @@ public class VisitRequestController {
 	private VisitRequest saveProductOrder(@RequestBody VisitRequest visitRequest) {
 		return visitRequestService.save(visitRequest);
 	}
-
+	
+	@ApiOperation(value = "Retrieves all the Visit Request for host id")
+	@GetMapping("/hostRequest/{hostid}")
+	private List<VisitRequest> getAllVisitorRequestUsingHostId(@PathVariable("hostid") String hostid) {
+		return visitRequestService.getAllVisitorRequestUsingHostId(hostid);
+	}
+	
+	@ApiOperation(value = "Retrieves all the Visit Request for visitorId")
+	@GetMapping("/visitRequestByVisitorId/{visitorid}")
+	private List<VisitRequest> getAllVisitorRequestVisitorId(@PathVariable("visitorid") String visitorid) {
+		return visitRequestService.getAllVisitorRequestVisitorId(visitorid);
+	}
+	@ApiOperation(value = "Create a Host Visit Request")
+	@PostMapping("/hostvisitRequest")
+	private VisitRequest savebyHost(@RequestBody VisitRequest visitRequest) {
+		return visitRequestService.savebyHost(visitRequest);
+	}
+	@ApiOperation(value = "Updating visitor request status")
+	@GetMapping("/visitRequestByVisitorId/{status}/{hostid}/{id}")
+	private Boolean updateRequestStatus(@PathVariable("status") String status ,@PathVariable("hostid") String hostid , @PathVariable("id") int id) {
+		return visitRequestService.updateRequestStatus(status,hostid ,id);
+	}
+	
 	@ApiOperation(value = "Update the existing Visit Request")
 	@PutMapping("/visitRequest")
 	private VisitRequest updateProductOrder(@RequestBody VisitRequest visitRequest) {
 		visitRequestService.update(visitRequest);
 		return visitRequest;
 	}
+	@ApiOperation(value = "GET User details")
+	@GetMapping("/users")
+	private Iterable<User> getAllUser() {
+		return userRepository.findAll();
+	}
+ 
 }
