@@ -1,6 +1,8 @@
 package com.paragon.visitorchek.security;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +19,11 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,6 +38,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -68,13 +75,21 @@ public class AuthController {
 	PasswordEncoder encoder;
 
 	@Autowired
-	JwtUtils jwtUtils;
-
+	JwtUtils jwtUtils;	
+ 
+	final String baseUrl = "https://portal.talentchek.com/tc/app/mobileApp/mobilelogin";
+	
+	final String talentIdUrl = "https://portal.talentchek.com/tc/hrms/master/employeeAdminMaster/visitorIdFromMobileNo?mobileNo=";
+	
 	@ApiOperation(value = "Sign In")
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-
-		//loginRequest.setPassword(jwtUtils.decrypt(loginRequest.getPassword()));
+		
+		RestTemplate restTemplate = new RestTemplate();  
+		JSONObject obj=new JSONObject();    
+		  obj.put("username",loginRequest.getUsername());    
+		  obj.put("password",loginRequest.getPassword());   
+	    ResponseEntity<Object> result = restTemplate.postForEntity(baseUrl, obj, Object.class); 
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
@@ -84,9 +99,20 @@ public class AuthController {
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 		List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
 				.collect(Collectors.toList());
+	 
 
 		return ResponseEntity.ok(
 				new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roles,ImageUtility.decompressImage(userDetails.getImage())));
+	}
+	
+	@ApiOperation(value = "Get TalentId from mobilenumber")
+	@GetMapping("/talentId")
+	public JSONObject getTalentIdByMobile(@RequestParam("mobileNo") String mobileNo) {
+		RestTemplate restTemplate = new RestTemplate();   
+	    ResponseEntity<String> result = restTemplate.getForEntity(talentIdUrl+mobileNo,  String.class); 
+	    JSONObject obj=new JSONObject();    
+		  obj.put("talentId",result.getBody());        
+	    return obj;
 	}
 
 	@ApiOperation(value = "Get user info by token")
