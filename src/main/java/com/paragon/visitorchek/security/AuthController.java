@@ -83,26 +83,15 @@ public class AuthController {
 	
 	@ApiOperation(value = "Sign In")
 	@PostMapping("/signin")
-	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+	public Object authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 		
 		RestTemplate restTemplate = new RestTemplate();  
 		JSONObject obj=new JSONObject();    
 		  obj.put("username",loginRequest.getUsername());    
 		  obj.put("password",loginRequest.getPassword());   
 	    ResponseEntity<Object> result = restTemplate.postForEntity(baseUrl, obj, Object.class); 
-		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-		String jwt = jwtUtils.generateJwtToken(authentication);
-
-		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-		List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
-				.collect(Collectors.toList());
-	 
-
-		return ResponseEntity.ok(
-				new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roles,ImageUtility.decompressImage(userDetails.getImage())));
+		 
+		return result.getBody();
 	}
 	
 	@ApiOperation(value = "Get TalentId from mobilenumber")

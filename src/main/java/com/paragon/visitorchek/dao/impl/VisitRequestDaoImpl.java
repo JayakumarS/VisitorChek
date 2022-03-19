@@ -31,13 +31,13 @@ public class VisitRequestDaoImpl implements VisitRequestDao {
 	public List<VisitRequest> findvistorsbyHost(String hostid) {
 		return jdbcTemplate.query("SELECT visit_request.id, visitor_talent_id visitorTalentId, host_talent_id hostTalentId, TO_CHAR(visit_starttime,'DD-MM-YYYY HH:SS') as visitStartTime, TO_CHAR(visit_endtime,'DD-MM-YYYY HH:SS') as visitEndtime,purpose_of_visit purpose, visit_place visitPlace,approve_by approveBy,"
 				+ "				 cancelled_by cancelledBy ,image "
-				+ "				  from visit_request,users where visit_request.visitor_talent_id::int=users.id and host_talent_id= ?", BeanPropertyRowMapper.newInstance(VisitRequest.class),hostid);
+				+ "				  from visit_request where  host_talent_id= ?", BeanPropertyRowMapper.newInstance(VisitRequest.class),hostid);
 		}
 	@Override
 	public List<VisitRequest> findvistorsbyVisitor(String visitorid) {
 		return jdbcTemplate.query(" SELECT visit_request.id, visitor_talent_id visitorTalentId, host_talent_id hostTalentId, TO_CHAR(visit_starttime,'DD-MM-YYYY HH:SS') as visitStartTime,TO_CHAR(visit_endtime,'DD-MM-YYYY HH:SS') as visitEndtime, purpose_of_visit purpose, visit_place visitPlace,approve_by approveBy,"
-				+ "	  cancelled_by cancelledBy ,image\r\n"
-				+ "				 from visit_request,users where visit_request.host_talent_id::int=users.id and visitor_talent_id= ?", BeanPropertyRowMapper.newInstance(VisitRequest.class),visitorid);
+				+ "	  cancelled_by cancelledBy ,image"
+				+ "				 from visit_request where  visitor_talent_id= ?", BeanPropertyRowMapper.newInstance(VisitRequest.class),visitorid);
 		}
 	
 	
@@ -60,13 +60,7 @@ public class VisitRequestDaoImpl implements VisitRequestDao {
 	List<String> baggage=	visitRequest.getBaggage().stream()
 	       .map(BaggageRequest::getId)
 	       .collect(Collectors.toList());
-		if(visitRequest.getType().equals("visitor")) {
-			/*
-			visitor_talent_id, host_talent_id, visit_starttime, visit_endtime, 
-            visit_place, purpose_of_visit, parking_required, vehical_no, 
-            no_of_people, baggage, remarks, visitor_name1, visitor_name2, 
-            visitor_name3, visitor_name4, visitor_name5, visitor_name6, visitor_name7, 
-            visitor_name8, visitor_name9, visitor_name10, */
+		if(visitRequest.getType().equals("visitor")) { 
 		result = jdbcTemplate.update(
 				"INSERT INTO visit_request("+
 			         "    visitor_talent_id, host_talent_id,  visit_starttime, visit_endtime, "+
@@ -74,19 +68,19 @@ public class VisitRequestDaoImpl implements VisitRequestDao {
 			         "   baggage, created_date, created_by,  "+
 			          "      remarks,visitor_name1, visitor_name2, \r\n"
 			          + "            visitor_name3, visitor_name4, visitor_name5, visitor_name6, visitor_name7, \r\n"
-			          + "            visitor_name8, visitor_name9, visitor_name10)"+
+			          + "            visitor_name8, visitor_name9, visitor_name10,image)"+
 			   " VALUES (?, ?, TO_TIMESTAMP(?,'YYYY-MM-DD HH24:MI'), TO_TIMESTAMP(?,'YYYY-MM-DD HH24:MI'), "+
 			      "      ?, ?, ?, ?, ?, "+
 			      "      ?, now(), ?, "+
 			      "      ?,"
-			      + "?,?,?,?,?,?,?,?,?,?)",
+			      + "?,?,?,?,?,?,?,?,?,?,?)",
 					new Object[] { visitRequest.getVisitorTalentId(),visitRequest.getHostTalentId(),
 							visitRequest.getVisitStarttime(),visitRequest.getVisitEndtime(),
 							visitRequest.getVisitPlace(),visitRequest.getPurpose(),visitRequest.getParking(),visitRequest.getVehicalNo(),
 							visitRequest.getNoofpeople()
-						,StringUtils.join(baggage, ", ") , visitRequest.getId(),visitRequest.getRemarks(),
+						,StringUtils.join(baggage, ", ") , visitRequest.getVisitorTalentId(),visitRequest.getRemarks(),
 						visitRequest.getNameList().getName1(),visitRequest.getNameList().getName2(),visitRequest.getNameList().getName3(),visitRequest.getNameList().getName4(),visitRequest.getNameList().getName5(),
-						visitRequest.getNameList().getName6(),visitRequest.getNameList().getName7(),visitRequest.getNameList().getName8(),visitRequest.getNameList().getName9(),visitRequest.getNameList().getName10()});
+						visitRequest.getNameList().getName6(),visitRequest.getNameList().getName7(),visitRequest.getNameList().getName8(),visitRequest.getNameList().getName9(),visitRequest.getNameList().getName10(),visitRequest.getImage()});
 		}else {
 			
 			result = jdbcTemplate.update(
@@ -96,20 +90,20 @@ public class VisitRequestDaoImpl implements VisitRequestDao {
 				         "   baggage, created_date, created_by,  "+
 				          "      remarks,visitor_name1, visitor_name2, \r\n"
 				          + "            visitor_name3, visitor_name4, visitor_name5, visitor_name6, visitor_name7, \r\n"
-				          + "            visitor_name8, visitor_name9, visitor_name10,approve_by,approve_date)"+
+				          + "            visitor_name8, visitor_name9, visitor_name10,approve_by,approve_date,image)"+
 				   " VALUES (?, ?, TO_TIMESTAMP(?,'YYYY-MM-DD HH24:MI'), TO_TIMESTAMP(?,'YYYY-MM-DD HH24:MI'), "+
 				      "      ?, ?, ?, ?, ?, "+
 				      "      ?, now(), ?, "+
 				      "      ?,"
-				      + "?,?,?,?,?,?,?,?,?,?,?,now())",
+				      + "?,?,?,?,?,?,?,?,?,?,?,now(),?)",
 						new Object[] { visitRequest.getVisitorTalentId(),visitRequest.getHostTalentId(),
 								visitRequest.getVisitStarttime(),visitRequest.getVisitEndtime(),
 								visitRequest.getVisitPlace(),visitRequest.getPurpose(),visitRequest.getParking(),visitRequest.getVehicalNo(),
 								visitRequest.getNoofpeople()
-							,StringUtils.join(baggage, ", ") , visitRequest.getId(),visitRequest.getRemarks(),
+							,StringUtils.join(baggage, ", ") , visitRequest.getHostTalentId(),visitRequest.getRemarks(),
 							visitRequest.getNameList().getName1(),visitRequest.getNameList().getName2(),visitRequest.getNameList().getName3(),visitRequest.getNameList().getName4(),visitRequest.getNameList().getName5(),
 							visitRequest.getNameList().getName6(),visitRequest.getNameList().getName7(),visitRequest.getNameList().getName8(),
-							visitRequest.getNameList().getName9(),visitRequest.getNameList().getName10(), visitRequest.getId()});
+							visitRequest.getNameList().getName9(),visitRequest.getNameList().getName10(), visitRequest.getHostTalentId(),visitRequest.getImage()});
 			
 			}
 		if (result != 0) {
