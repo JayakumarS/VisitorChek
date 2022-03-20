@@ -42,3 +42,23 @@ WITH (
 );
 ALTER TABLE visit_request
   OWNER TO postgres;
+
+-- Table: public.guard
+
+-- DROP TABLE public.guard;
+
+CREATE TABLE public.guard
+(
+  id serial NOT NULL,
+  talentid character varying(20),
+  userid character varying(20),
+  name character varying(30),
+  password character varying(120),
+  guarding_gate character varying(40),
+  CONSTRAINT guard_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.guard
+  OWNER TO postgres;
