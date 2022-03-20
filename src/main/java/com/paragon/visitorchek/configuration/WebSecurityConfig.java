@@ -52,12 +52,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-				.antMatchers("/**").permitAll().antMatchers("/v2/api-docs", "/configuration/ui",
-						"/swagger-resources/**", "/configuration/security", "/swagger-ui.html", "/webjars/**")
-				.permitAll().anyRequest().authenticated();
-		//http.authorizeRequests().antMatchers("/").permitAll();
+		//http.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+		//		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
+		//		.antMatchers("/**").permitAll().antMatchers("/v2/api-docs", "/configuration/ui",
+		//				"/swagger-resources/**", "/configuration/security", "/swagger-ui.html", "/webjars/**")
+		//		.permitAll().anyRequest().authenticated();
+		http.cors().and().authorizeRequests().antMatchers("/").permitAll();
 		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
 }
