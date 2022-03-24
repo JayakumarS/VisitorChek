@@ -12,7 +12,7 @@
 	<version>1.0.0</version>
 	<name>Visitor Chek</name>
 	<description>Visitor Chek App</description>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<properties>
 		<java.version>1.8</java.version>
 		<tomcat.version>9.0.45</tomcat.version>
@@ -84,6 +84,42 @@
     <artifactId>commons-lang3</artifactId>
     <version>3.12.0</version>
 </dependency>
+
+
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter</artifactId>
+  <exclusions>
+    <exclusion>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-logging</artifactId>
+    </exclusion>
+  </exclusions>
+</dependency>
+
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-web</artifactId>
+  <exclusions>
+    <exclusion>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-logging</artifactId>
+    </exclusion>
+  </exclusions>
+</dependency>
+
+
+<dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+        <exclusions>
+            <exclusion>
+                <groupId>org.apache.tomcat.embed</groupId>
+                <artifactId>tomcat-embed-websocket</artifactId>
+            </exclusion>
+        </exclusions>
+    </dependency>
+
 	</dependencies>
 
 	<build>

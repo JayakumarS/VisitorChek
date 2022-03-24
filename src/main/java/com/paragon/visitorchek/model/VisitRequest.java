@@ -21,6 +21,10 @@ public class VisitRequest {
 	private String visitEndtime;
 	private String visitPlace;
 	private String visitStarttime; 
+	//private Date VisitStarttime;
+	
+
+
 	private Date createdDate;
 	private String createdBy;
 	private Date  updatedDate;
@@ -181,20 +185,34 @@ public class VisitRequest {
 		this.visitPlace = visitPlace;
 	}
 
-
-	public String getVisitStarttime() {
-		return visitStarttime;
-	}
-
-
-	public void setVisitStarttime(String visitStarttime) {
-		this.visitStarttime = visitStarttime;
-	}
-
+//	public Integer getVisitStartTime() {
+//		return visitStartTime;
+//	}
+//
+//
+//	public void setVisitStartTime(Integer visitStartTime) {
+//		this.visitStartTime = visitStartTime;
+//	}
+	
+	 
+	 
 
 	public Date getCreatedDate() {
 		return createdDate;
 	}
+
+
+//	public String getVisitStarttime() {
+//		return visitStarttime;
+//	}
+//
+//
+//	public void setVisitStarttime(String visitStarttime) {
+//		this.visitStarttime = visitStarttime;
+//	}
+
+
+	
 
 
 	public void setCreatedDate(Date createdDate) {
@@ -319,6 +337,16 @@ public class VisitRequest {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+
+	public String getVisitStarttime() {
+		return visitStarttime;
+	}
+
+
+	public void setVisitStarttime(String visitStarttime) {
+		this.visitStarttime = visitStarttime;
 	}
 
 

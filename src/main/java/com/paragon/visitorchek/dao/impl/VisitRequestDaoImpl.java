@@ -23,7 +23,7 @@ public class VisitRequestDaoImpl implements VisitRequestDao {
 
 	@Override
 	public List<VisitRequest> findAll() {
-		return jdbcTemplate.query("SELECT id, visitor_talent_id visitorTalentId, host_talent_id hostTalentId, TO_CHAR(visit_starttime,'DD-MM-YYYY HH:SS') as visitStartTime, purpose, visit_place visitPlace from visit_request", BeanPropertyRowMapper.newInstance(VisitRequest.class));
+		return jdbcTemplate.query("SELECT id, visitor_talent_id visitorTalentId, host_talent_id hostTalentId,DATE(visit_starttime) as VisitStarttime, purpose_of_visit, visit_place visitPlace from visit_request", BeanPropertyRowMapper.newInstance(VisitRequest.class));
 	}
 
 	
@@ -35,7 +35,7 @@ public class VisitRequestDaoImpl implements VisitRequestDao {
 		}
 	@Override
 	public List<VisitRequest> findvistorsbyVisitor(String visitorid) {
-		return jdbcTemplate.query(" SELECT visit_request.id, visitor_talent_id visitorTalentId, host_talent_id hostTalentId, TO_CHAR(visit_starttime,'DD-MM-YYYY HH:SS') as visitStartTime,TO_CHAR(visit_endtime,'DD-MM-YYYY HH:SS') as visitEndtime, purpose_of_visit purpose, visit_place visitPlace,approve_by approveBy,"
+		return jdbcTemplate.query(" SELECT visit_request.id, visitor_talent_id visitorTalentId, host_talent_id hostTalentId, TO_CHAR(visit_starttime,'DD-MM-YYYY HH:mi AM') as visitStarttime, TO_CHAR(visit_endtime,'DD-MM-YYYY HH:mi AM') as visitEndtime, purpose_of_visit purpose, visit_place visitPlace,approve_by approveBy,"
 				+ "	  cancelled_by cancelledBy ,image"
 				+ "				 from visit_request where  visitor_talent_id= ?", BeanPropertyRowMapper.newInstance(VisitRequest.class),visitorid);
 		}
@@ -75,7 +75,7 @@ public class VisitRequestDaoImpl implements VisitRequestDao {
 			      "      ?,"
 			      + "?,?,?,?,?,?,?,?,?,?,?)",
 					new Object[] { visitRequest.getVisitorTalentId(),visitRequest.getHostTalentId(),
-							visitRequest.getVisitStarttime(),visitRequest.getVisitEndtime(),
+							visitRequest.getVisitEndtime(),visitRequest.getVisitEndtime(),
 							visitRequest.getVisitPlace(),visitRequest.getPurpose(),visitRequest.getParking(),visitRequest.getVehicalNo(),
 							visitRequest.getNoofpeople()
 						,StringUtils.join(baggage, ", ") , visitRequest.getVisitorTalentId(),visitRequest.getRemarks(),
@@ -97,7 +97,7 @@ public class VisitRequestDaoImpl implements VisitRequestDao {
 				      "      ?,"
 				      + "?,?,?,?,?,?,?,?,?,?,?,now(),?)",
 						new Object[] { visitRequest.getVisitorTalentId(),visitRequest.getHostTalentId(),
-								visitRequest.getVisitStarttime(),visitRequest.getVisitEndtime(),
+								visitRequest.getVisitStarttime(),visitRequest.getVisitStarttime(),
 								visitRequest.getVisitPlace(),visitRequest.getPurpose(),visitRequest.getParking(),visitRequest.getVehicalNo(),
 								visitRequest.getNoofpeople()
 							,StringUtils.join(baggage, ", ") , visitRequest.getHostTalentId(),visitRequest.getRemarks(),
@@ -117,10 +117,10 @@ public class VisitRequestDaoImpl implements VisitRequestDao {
 	public VisitRequest save(VisitRequest visitRequest) {
 		int result = 0;
 		result = jdbcTemplate.update(
-				"INSERT INTO visit_request (talentid,  visit_starttime ,purpose,visit_place) "
-				+ " VALUES(?,?,TO_TIMESTAMP(?,'YYYY-MM-DD HH24:MI'),?,?)",
-				new Object[] { visitRequest.getVisitorTalentId(),  visitRequest.getVisitStarttime(),
-						visitRequest.getPurpose(), visitRequest.getVisitPlace()});
+				"INSERT INTO visit_request (visitor_talent_id, visit_starttime ,visit_endtime,  purpose_of_visit,visit_place,host_talent_id, created_by, created_date) "
+				+ " VALUES(?,TO_TIMESTAMP(?,'YYYY-MM-DD HH24:MI'),TO_TIMESTAMP(?,'YYYY-MM-DD HH24:MI'),?,?,?,?,now())",
+				new Object[] { visitRequest.getVisitorTalentId(),  visitRequest.getVisitStarttime(),visitRequest.getVisitEndtime(),
+						visitRequest.getPurpose(), visitRequest.getVisitPlace(),visitRequest.getHostTalentId(), visitRequest.getVisitorTalentId()});
 		if (result != 0) {
 			return visitRequest;
 		} else {
@@ -137,7 +137,7 @@ public class VisitRequestDaoImpl implements VisitRequestDao {
 	public VisitRequest update(VisitRequest visitRequest) {
 		int result = 0;
 		result = jdbcTemplate.update("UPDATE visit_request SET talentid=?,visit_starttime=to_date(?,'DD-MM-YYYY'),purpose=?,visit_place=? WHERE id=?",
-				new Object[] { visitRequest.getVisitorTalentId(),  visitRequest.getVisitStarttime(),
+				new Object[] { visitRequest.getVisitorTalentId(),  visitRequest.getVisitEndtime(),
 						visitRequest.getPurpose(), visitRequest.getVisitPlace(),visitRequest.getId() });
 
 		if (result != 0) {
