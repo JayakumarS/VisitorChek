@@ -37,6 +37,12 @@ public class VisitRequestService {
 		return visitRequestDao.findById(id);
 	}
 
+	public List<VisitRequest> getAllVisitorRequestByVisitDate(String visitDate) {
+		List<VisitRequest> orders = new ArrayList<VisitRequest>();
+		visitRequestDao.findvistorsbyVisitDate(visitDate).forEach(orders1 -> orders.add(orders1));
+		return orders;
+	}
+	
 	@Transactional
 	public VisitRequest save(VisitRequest visitRequest) {
 	 	visitRequest = visitRequestDao.save(visitRequest);

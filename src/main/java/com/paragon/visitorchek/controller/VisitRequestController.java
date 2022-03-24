@@ -64,6 +64,13 @@ public class VisitRequestController {
 	private List<VisitRequest> getAllVisitorRequestVisitorId(@PathVariable("visitorid") String visitorid) {
 		return visitRequestService.getAllVisitorRequestVisitorId(visitorid);
 	}
+
+	@ApiOperation(value = "Retrieves all Visit Requests for a Visit Date")
+	@GetMapping("/visitRequestByDate/{visitDate}")
+	private List<VisitRequest> getAllVisitorRequestVisitDate(@PathVariable("visitDate") String visitDate) {
+		return visitRequestService.getAllVisitorRequestByVisitDate(visitDate);
+	}
+	
 	@ApiOperation(value = "Create a Host Visit Request")
 	@PostMapping("/hostvisitRequest")
 	private VisitRequest savebyHost(@RequestBody VisitRequest visitRequest) {

@@ -22,4 +22,6 @@ public interface VisitRequestDao{
 	List<VisitRequest> findvistorsbyVisitor(String hostid);
 
 	Boolean update(String status,String hostId, int id);
+
+	List<VisitRequest> findvistorsbyVisitDate(String visitDate);
 }

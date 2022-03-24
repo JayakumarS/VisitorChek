@@ -167,4 +167,11 @@ public class VisitRequestDaoImpl implements VisitRequestDao {
 		}
 	}
 
+	@Override
+	public List<VisitRequest> findvistorsbyVisitDate(String visitDate) {
+		return jdbcTemplate.query(" SELECT visit_request.id, visitor_talent_id visitorTalentId, host_talent_id hostTalentId, TO_CHAR(visit_starttime,'DD-MM-YYYY HH:mi AM') as visitStarttime, TO_CHAR(visit_endtime,'DD-MM-YYYY HH:mi AM') as visitEndtime, purpose_of_visit purpose, visit_place visitPlace,approve_by approveBy,"
+				+ "	  cancelled_by cancelledBy"
+				+ "				 from visit_request where TO_CHAR(visit_starttime,'DD-MM-YYYY')= ?", BeanPropertyRowMapper.newInstance(VisitRequest.class),visitDate);
+		}
+	
 }
