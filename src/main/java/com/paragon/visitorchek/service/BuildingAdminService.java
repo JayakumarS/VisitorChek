@@ -1,8 +1,12 @@
 package com.paragon.visitorchek.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +33,16 @@ public class BuildingAdminService {
 	}
 	
 	public BuildingAdmin updateGuard(BuildingAdmin guard) {
-		return repository.save(guard);
+		BuildingAdmin updateGuard = getGuardById(guard.getId());
+		updateGuard.setGuardingGate(guard.getGuardingGate());
+		updateGuard.setName(guard.getName());
+		return repository.saveAndFlush(updateGuard);
+	}
+	
+	public BuildingAdmin getGuardDetailsByTalentId(String resultBody) {
+		BuildingAdmin buildingAdmin = new BuildingAdmin();
+		// placeholder for code to get talentId, name from resultBody
+
+		return buildingAdmin;
 	}
 }

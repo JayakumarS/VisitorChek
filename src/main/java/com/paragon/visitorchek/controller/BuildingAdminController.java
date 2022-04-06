@@ -1,13 +1,19 @@
 package com.paragon.visitorchek.controller;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import com.paragon.visitorchek.service.BuildingAdminService;
 import com.paragon.visitorchek.usermanagement.BuildingAdmin;
@@ -45,6 +51,18 @@ public class BuildingAdminController {
 	@ApiOperation(value = "Update Guard entry")
 	@RequestMapping(value = "/update")
 	private BuildingAdmin updateGuardInfo(@RequestBody BuildingAdmin guardRequest) {
-		return guardService.saveGuard(guardRequest);
+		return guardService.updateGuard(guardRequest);
 	}
+	
+	//verifyTalentId
+	@ApiOperation(value = "Validate Guard's talentId")
+	@GetMapping("/validateTalentId/{talentId}")	
+	private BuildingAdmin validateTalentId(@PathVariable("talentId") String talentId) {
+	    RestTemplate restTemplate = new RestTemplate();
+	    ResponseEntity<String> result = restTemplate.getForEntity(talentId, String.class);
+	    //LinkedHashMap<String, Object> resultMap = (LinkedHashMap<String, Object>)result.getBody();
+		return guardService.getGuardDetailsByTalentId(result.getBody());
+	}
+	
+
 }

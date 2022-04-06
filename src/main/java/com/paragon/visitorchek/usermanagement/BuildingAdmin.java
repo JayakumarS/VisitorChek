@@ -22,7 +22,7 @@ public class BuildingAdmin {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-    private Long id;
+    private Integer id;
 	
 	//@NotBlank
 	@Size(max = 20)
@@ -42,11 +42,11 @@ public class BuildingAdmin {
     @Column(name = "guarding_gate")
     private String guardingGate;
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
