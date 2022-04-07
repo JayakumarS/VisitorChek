@@ -38,6 +38,9 @@ public class VisitRequest {
 	private Date  vistorOutTime;
 	private String image;
 	private String type;
+	private String hostImage;
+	private String hostName;
+	private String visitorName;
 	
 
 	/*public byte[] getImage() {
@@ -53,6 +56,36 @@ public class VisitRequest {
 	public String toString() {
 		
 		return "Baggage"+ this.baggage +",Remarks"+this.remarks+",noofpeople"+this.noofpeople;
+	}
+
+
+	public String getHostImage() {
+		return hostImage;
+	}
+
+
+	public void setHostImage(String hostImage) {
+		this.hostImage = hostImage;
+	}
+
+
+	public String getHostName() {
+		return hostName;
+	}
+
+
+	public void setHostName(String hostName) {
+		this.hostName = hostName;
+	}
+
+
+	public String getVisitorName() {
+		return visitorName;
+	}
+
+
+	public void setVisitorName(String visitorName) {
+		this.visitorName = visitorName;
 	}
 
 
