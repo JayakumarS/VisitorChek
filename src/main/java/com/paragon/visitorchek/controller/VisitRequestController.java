@@ -59,6 +59,12 @@ public class VisitRequestController {
 		return visitRequestService.getAllVisitorRequestUsingHostId(hostid);
 	}
 	
+	 @ApiOperation(value = "Retrieves all the Visit Request for id")
+	@GetMapping("/getNotesValue/{id}")
+	private List<VisitRequest> getNotesValue(@PathVariable("id") Integer id) {
+		return visitRequestService.getNotesValue(id);
+	}
+	
 	@ApiOperation(value = "Retrieves all the Visit Request for visitorId")
 	@GetMapping("/visitRequestByVisitorId/{visitorid}")
 	private List<VisitRequest> getAllVisitorRequestVisitorId(@PathVariable("visitorid") String visitorid) {
@@ -92,6 +98,11 @@ public class VisitRequestController {
 	@GetMapping("/users")
 	private Iterable<User> getAllUser() {
 		return userRepository.findAll();
+	}
+	@ApiOperation(value = "Create a Notes")
+	@PostMapping("/notes")
+	private VisitRequest saveNotes(@RequestBody VisitRequest visitRequest) {
+		return visitRequestService.saveNotes(visitRequest);
 	}
  
 }

@@ -22,6 +22,8 @@ public class VisitRequest {
 	private String visitPlace;
 	private String visitStarttime; 
 	//private Date VisitStarttime;
+	private String hostNotes;
+	
 	
 
 
@@ -50,6 +52,16 @@ public class VisitRequest {
 	public void setImage(byte[] image) {
 		this.image = ImageUtility.decompressImage(image);
 	}*/
+	
+	
+	public String getHostNotes() {
+		return hostNotes;
+	}
+
+
+	public void setHostNotes(String hostNotes) {
+		this.hostNotes = hostNotes;
+	}
 
  
 	@Override
@@ -381,6 +393,12 @@ public class VisitRequest {
 	public void setVisitStarttime(String visitStarttime) {
 		this.visitStarttime = visitStarttime;
 	}
+
+
+	
+
+
+	
 
 
  

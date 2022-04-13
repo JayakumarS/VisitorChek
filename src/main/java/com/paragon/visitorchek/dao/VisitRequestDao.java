@@ -13,12 +13,16 @@ public interface VisitRequestDao{
 
 	VisitRequest save(VisitRequest orders);
 	
+	VisitRequest saveNotes(VisitRequest orders);
+	
 	VisitRequest savebyHost(VisitRequest hostrequest,Date updateTime);
 	
 	int  deleteById(long id);
 
 	VisitRequest update(VisitRequest visitRequest);
 	List<VisitRequest> findvistorsbyHost(String hostid);
+	
+	List<VisitRequest> getNotesValue(Integer hostid);
 	List<VisitRequest> findvistorsbyVisitor(String hostid);
 
 	Boolean update(String status,String hostId, int id);

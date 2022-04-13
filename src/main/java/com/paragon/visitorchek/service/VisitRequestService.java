@@ -28,6 +28,13 @@ public class VisitRequestService {
 		visitRequestDao.findvistorsbyHost(hostid).forEach(orders1 -> orders.add(orders1));
 		return orders;
 	}
+	
+	public List<VisitRequest> getNotesValue(Integer hostid) {
+		List<VisitRequest> orders = new ArrayList<VisitRequest>();
+		visitRequestDao.getNotesValue(hostid).forEach(orders1 -> orders.add(orders1));
+		return orders;
+	}
+	
 	public List<VisitRequest> getAllVisitorRequestVisitorId(String visitorId) {
 		List<VisitRequest> orders = new ArrayList<VisitRequest>();
 		visitRequestDao.findvistorsbyVisitor(visitorId).forEach(orders1 -> orders.add(orders1));
@@ -46,6 +53,12 @@ public class VisitRequestService {
 	@Transactional
 	public VisitRequest save(VisitRequest visitRequest) {
 	 	visitRequest = visitRequestDao.save(visitRequest);
+	 	return visitRequest;
+	}
+	
+	@Transactional
+	public VisitRequest saveNotes(VisitRequest visitRequest) {
+	 	visitRequest = visitRequestDao.saveNotes(visitRequest);
 	 	return visitRequest;
 	}
 

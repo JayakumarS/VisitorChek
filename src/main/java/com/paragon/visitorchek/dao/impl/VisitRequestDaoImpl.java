@@ -44,6 +44,13 @@ public class VisitRequestDaoImpl implements VisitRequestDao {
 				+ "				 cancelled_by cancelledBy , mobile_number as mobileNumber, visitor_name visitorName, host_name as hostName, host_image as hostImage, image  "
 				+ "				  from visit_request where  host_talent_id= ?", BeanPropertyRowMapper.newInstance(VisitRequest.class),hostid);
 		}
+	
+	
+	@Override
+	public List<VisitRequest> getNotesValue(Integer hostid) {
+		return jdbcTemplate.query("select notes as hostNotes from visit_request where id=?", BeanPropertyRowMapper.newInstance(VisitRequest.class),hostid);
+		}
+	
 	@Override
 	public List<VisitRequest> findvistorsbyVisitor(String visitorid) {
 		return jdbcTemplate.query(" SELECT visit_request.id, visitor_talent_id visitorTalentId, host_talent_id hostTalentId, TO_CHAR(visit_starttime,'DD-MM-YYYY HH:mi AM') as visitStarttime, TO_CHAR(visit_endtime,'DD-MM-YYYY HH:mi AM') as visitEndtime, purpose_of_visit purpose, visit_place visitPlace,approve_by approveBy,"
@@ -281,5 +288,33 @@ public class VisitRequestDaoImpl implements VisitRequestDao {
 				+ "	  cancelled_by cancelledBy"
 				+ "				 from visit_request where TO_CHAR(visit_starttime,'DD-MM-YYYY')= ?", BeanPropertyRowMapper.newInstance(VisitRequest.class),visitDate);
 		}
+
+
+	@Override
+	public VisitRequest saveNotes(VisitRequest orders) {
+		int result = 0;
+		
+		VisitRequestDaoImpl bean = new VisitRequestDaoImpl();
+		
+		String query="";
+		
+		query =query+"UPDATE visit_request SET notes=?  WHERE id=?";
+		
+		result = jdbcTemplate.update(query,
+				new Object[] { orders.getHostNotes(),orders.getId() });
+		
+		if (result != 0) {
+			try {
+				RestTemplate restTemplate = new RestTemplate();   
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return orders;
+		} else {
+			return null;
+		}
+	}
 	
 }
