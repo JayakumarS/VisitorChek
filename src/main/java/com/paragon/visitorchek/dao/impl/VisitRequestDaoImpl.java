@@ -80,7 +80,12 @@ public class VisitRequestDaoImpl implements VisitRequestDao {
 	       .collect(Collectors.toList());
 	
 	VisitRequestDaoImpl ab = new VisitRequestDaoImpl();
-
+	if(visitRequest.getVisitorName() == null) {
+		visitRequest.setVisitorName(visitRequest.getMobileNumber());
+	}
+	if(visitRequest.getHostName() == null) {
+		visitRequest.setHostName(visitRequest.getMobileNumber());
+	}
 		if(visitRequest.getType().equals("visitor")) { 
 		result = jdbcTemplate.update(
 				"INSERT INTO visit_request("+
