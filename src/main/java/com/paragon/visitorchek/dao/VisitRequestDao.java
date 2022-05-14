@@ -20,12 +20,26 @@ public interface VisitRequestDao{
 	int  deleteById(long id);
 
 	VisitRequest update(VisitRequest visitRequest);
+	
 	List<VisitRequest> findvistorsbyHost(String hostid);
 	
 	List<VisitRequest> getNotesValue(Integer hostid);
+	
 	List<VisitRequest> findvistorsbyVisitor(String hostid);
 
 	Boolean update(String status,String hostId, int id);
 
 	List<VisitRequest> findvistorsbyVisitDate(String visitDate);
+
+	List<VisitRequest> findAllList(String hostid);
+
+	VisitRequest saveListIn(VisitRequest visitRequest);
+
+	VisitRequest saveListOut(VisitRequest visitRequest);
+
+	VisitRequest saveToken(VisitRequest visitRequest);
+
+	Boolean saveAccept(String email,String id,String res);
+
+
 }

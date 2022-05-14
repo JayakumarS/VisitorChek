@@ -20,6 +20,9 @@ public class Report {
 	private String otherNames;
 	private String visitorName;
 
+	private String hostName;
+	
+	
 	
 	public Integer getRowNum() {
 		return rowNum;
@@ -130,6 +133,12 @@ public class Report {
 	}
 	public void setVisitorName(String visitorName) {
 		this.visitorName = visitorName;
+	}
+	public String getHostName() {
+		return hostName;
+	}
+	public void setHostName(String hostName) {
+		this.hostName = hostName;
 	}
 	
 

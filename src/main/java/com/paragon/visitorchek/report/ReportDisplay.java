@@ -26,6 +26,10 @@ public class ReportDisplay {
 	
 	private String otherNames;
 	private String visitorName;
+	
+	private String hostName;
+	
+	
 	public Integer getRowNum() {
 		return rowNum;
 	}

@@ -23,6 +23,12 @@ public class VisitRequest {
 	private String visitStarttime; 
 	//private Date VisitStarttime;
 	private String hostNotes;
+	private String listStatus;
+	private Integer requestId;
+	private String address;
+	private String hostAddress;
+	private String token;
+	
 	
 	
 
@@ -43,8 +49,21 @@ public class VisitRequest {
 	private String hostImage;
 	private String hostName;
 	private String visitorName;
-	
+	private String email;
+	private String username;
 
+	
+	private String In;
+	private String Out;
+	
+	private String appointmentDate;
+
+	private String visibility;
+	
+	private String nameOfVisitor;
+	
+	
+	
 	/*public byte[] getImage() {
 		return image;
 	}
@@ -54,6 +73,56 @@ public class VisitRequest {
 	}*/
 	
 	
+	public String getIn() {
+		return In;
+	}
+
+
+	public String getAppointmentDate() {
+		return appointmentDate;
+	}
+
+
+	public void setAppointmentDate(String appointmentDate) {
+		this.appointmentDate = appointmentDate;
+	}
+
+
+	public void setIn(String in) {
+		In = in;
+	}
+
+
+	public String getOut() {
+		return Out;
+	}
+
+
+	public void setOut(String out) {
+		Out = out;
+	}
+
+
+	public String getEmail() {
+		return email;
+	}
+
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+
+	public String getUsername() {
+		return username;
+	}
+
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+
 	public String getHostNotes() {
 		return hostNotes;
 	}
@@ -395,11 +464,77 @@ public class VisitRequest {
 	}
 
 
-	
+	public String getListStatus() {
+		return listStatus;
+	}
+
+
+	public void setListStatus(String listStatus) {
+		this.listStatus = listStatus;
+	}
+
+
+	public Integer getRequestId() {
+		return requestId;
+	}
+
+
+	public void setRequestId(Integer requestId) {
+		this.requestId = requestId;
+	}
+
+
+	public String getVisibility() {
+		return visibility;
+	}
+
+
+	public void setVisibility(String visibility) {
+		this.visibility = visibility;
+	}
+
+
+	public String getNameOfVisitor() {
+		return nameOfVisitor;
+	}
+
+
+	public void setNameOfVisitor(String nameOfVisitor) {
+		this.nameOfVisitor = nameOfVisitor;
+	}
+
+
+	public String getAddress() {
+		return address;
+	}
+
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+
+	public String getHostAddress() {
+		return hostAddress;
+	}
+
+
+	public void setHostAddress(String hostAddress) {
+		this.hostAddress = hostAddress;
+	}
+
+
+	public String getToken() {
+		return token;
+	}
+
+
+	public void setToken(String token) {
+		this.token = token;
+	}
 
 
 	
-
-
+	
  
 }

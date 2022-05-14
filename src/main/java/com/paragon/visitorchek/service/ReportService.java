@@ -98,9 +98,11 @@ public class ReportService {
 				visitDate = new SimpleDateFormat("dd-MM-yyyy").format(date);
 				date = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(report.getVisitEndtime());
 				endTime = new SimpleDateFormat("hh:mm a").format(date);
+				
 				reportDisplay.setVisitDate(visitDate);
 				reportDisplay.setVisitStartime(startTime);
 				reportDisplay.setVisitEndtime(endTime);
+				reportDisplay.setHostName(report.getHostName());
 			} catch (ParseException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

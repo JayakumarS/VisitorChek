@@ -24,7 +24,7 @@ public class ReportDaoImpl implements ReportDao {
 	
 	private final String REPORT_SQL_BASE= "SELECT row_number() OVER() as rownum, visit_starttime as visitStartime,  visitor_name1 as name1, visitor_name2 as name2, visitor_name3 as name3, visitor_name4 as name4," + 
 			"visitor_name5 as name5, visitor_name6 as name6, visitor_name7 as name7," + 
-			" visitor_name8 as name8, visitor_name9 as name9, visitor_name10 as name10, visit_place as visitPlace, visit_endtime as visitEndtime, purpose_of_visit as purpose"  
+			" visitor_name8 as name8, visitor_name9 as name9, visitor_name10 as name10,host_name as hostName, visit_place as visitPlace, visit_endtime as visitEndtime, purpose_of_visit as purpose"  
 			+ " FROM visit_request";
 	private final String REPORT_SQL_NAMES_WHERE = "visitor_name1 ILIKE ? OR visitor_name2 ILIKE ? OR visitor_name3 ILIKE ? OR visitor_name4 ILIKE ? "
 			+ " OR visitor_name5 ILIKE ? OR visitor_name6 ILIKE ? OR visitor_name7 ILIKE ? OR visitor_name8 ILIKE ? OR visitor_name9 ILIKE ? "

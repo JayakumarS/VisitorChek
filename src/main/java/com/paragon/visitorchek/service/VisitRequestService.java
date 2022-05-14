@@ -81,4 +81,36 @@ public class VisitRequestService {
 	public Boolean updateRequestStatus(String status, String hostId, int id) {
 		return visitRequestDao.update(status, hostId, id);
 	}
+
+	public List<VisitRequest> getAllMyList(String hostid) {
+		// TODO Auto-generated method stub
+		List<VisitRequest> orders = new ArrayList<VisitRequest>();
+		visitRequestDao.findAllList(hostid).forEach(orders1 -> orders.add(orders1));
+		return orders;
+	}
+
+	public VisitRequest saveListIn(VisitRequest visitRequest) {
+		// TODO Auto-generated method stub
+		visitRequest = visitRequestDao.saveListIn(visitRequest);
+		return visitRequest;
+	}
+
+	public VisitRequest saveListOut(VisitRequest visitRequest) {
+		// TODO Auto-generated method stub
+		visitRequest = visitRequestDao.saveListOut(visitRequest);
+		return visitRequest;
+	}
+
+	public VisitRequest saveToken(VisitRequest visitRequest) {
+		// TODO Auto-generated method stub
+		visitRequest = visitRequestDao.saveToken(visitRequest); 
+		return visitRequest;
+	}
+
+	public Boolean saveAccept(String email,String id,String res) {
+		// TODO Auto-generated method stub
+		return  visitRequestDao.saveAccept(email,id,res);
+	}
+
+
 }

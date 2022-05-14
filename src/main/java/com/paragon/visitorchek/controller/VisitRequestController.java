@@ -9,9 +9,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.paragon.visitorchek.model.SideBar;
 import com.paragon.visitorchek.model.VisitRequest;
+import com.paragon.visitorchek.service.SideBarService;
 import com.paragon.visitorchek.service.VisitRequestService;
 import com.paragon.visitorchek.usermanagement.User;
 import com.paragon.visitorchek.usermanagement.UserRepository;
@@ -23,6 +26,9 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 public class VisitRequestController {
 
+	@Autowired
+	SideBarService sideBarService;
+	
 	@Autowired
 	VisitRequestService visitRequestService;
 	
@@ -53,6 +59,12 @@ public class VisitRequestController {
 		return visitRequestService.save(visitRequest);
 	}
 	
+	@ApiOperation(value = "Retrieves all the visitRequest")
+	@GetMapping("/myList/{hostid}")
+	private List<VisitRequest> getAllMyList(@PathVariable("hostid") String hostid) {
+		return visitRequestService.getAllMyList(hostid);
+	}
+	
 	@ApiOperation(value = "Retrieves all the Visit Request for host id")
 	@GetMapping("/hostRequest/{hostid}")
 	private List<VisitRequest> getAllVisitorRequestUsingHostId(@PathVariable("hostid") String hostid) {
@@ -69,6 +81,12 @@ public class VisitRequestController {
 	@GetMapping("/visitRequestByVisitorId/{visitorid}")
 	private List<VisitRequest> getAllVisitorRequestVisitorId(@PathVariable("visitorid") String visitorid) {
 		return visitRequestService.getAllVisitorRequestVisitorId(visitorid);
+	}
+	
+	@ApiOperation(value = "Retrieves all the Visit Request for visitorId")
+	@GetMapping("/getGuard/{visitorid}")
+	private SideBar getGuard(@PathVariable("visitorid") String visitorid) throws Exception {
+		return sideBarService.getGuard(visitorid);
 	}
 
 	@ApiOperation(value = "Retrieves all Visit Requests for a Visit Date")
@@ -104,5 +122,29 @@ public class VisitRequestController {
 	private VisitRequest saveNotes(@RequestBody VisitRequest visitRequest) {
 		return visitRequestService.saveNotes(visitRequest);
 	}
- 
+	
+	@ApiOperation(value = "Save ListIn")
+	@PostMapping("/saveIn")
+	private VisitRequest saveListIn(@RequestBody VisitRequest visitRequest) {
+		return visitRequestService.saveListIn(visitRequest);
+	}
+	
+	@ApiOperation(value = "save ListOut")
+	@PostMapping("/saveOut")
+	private VisitRequest saveListOut(@RequestBody VisitRequest visitRequest) {
+		return visitRequestService.saveListOut(visitRequest);
+	}
+	
+	@ApiOperation(value = "save Token")
+	@PostMapping("/saveToken")
+	private VisitRequest saveToken(@RequestBody VisitRequest visitRequest) {
+		return visitRequestService.saveToken(visitRequest);
+	}
+	
+	@ApiOperation(value = "Email Accept")
+	@GetMapping("/emailAccept")
+	private Boolean saveAccept(@RequestParam String id ,@RequestParam String emailId , @RequestParam String res) {
+		return visitRequestService.saveAccept(emailId,id,res);
+	}
+	
 }
